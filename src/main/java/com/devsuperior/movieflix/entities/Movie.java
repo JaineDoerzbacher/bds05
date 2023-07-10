@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-
 @Entity
 @Table(name = "tb_movie")
 public class Movie implements Serializable {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,14 +18,14 @@ public class Movie implements Serializable {
     private String subTitle;
     private Integer year;
     private String imgUrl;
+    @Column(columnDefinition = "TEXT")
     private String synopsis;
 
     @ManyToOne
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany
-    @JoinColumn(name = "review_id")
+    @OneToMany(mappedBy = "movie")
     private List<Review> reviews = new ArrayList<>();
 
     public Movie() {
@@ -102,11 +101,10 @@ public class Movie implements Serializable {
         return reviews;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Movie)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
         return Objects.equals(id, movie.id);
     }
@@ -115,10 +113,4 @@ public class Movie implements Serializable {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-
-
-
-
-
 }
